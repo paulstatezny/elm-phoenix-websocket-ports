@@ -1,6 +1,6 @@
 {
   "name": "elm-phoenix-websocket-ports",
-  "version": "0.2.1",
+  "version": "0.0.0",
   "description": "Generic Elm ports for interacting with the Phoenix framework via websocket",
   "main": "lib/js/phoenix-websocket-ports.js",
   "scripts": {
