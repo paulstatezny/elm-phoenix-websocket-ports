@@ -56,7 +56,7 @@ update msg model =
 
 ### 4. Register your Elm app in JavaScript
 
-#### Using [Elm Router](https://github.com/knledg/elm-router)
+### Using [Elm Router](https://github.com/knledg/elm-router)
 
 ```javascript
 var phoenix = require('phoenix');
@@ -66,7 +66,7 @@ var websocketPorts = require('elm-phoenix-websocket-ports')(phoenix, socketAddre
 elmRouter.start(Elm, [websocketPorts]);
 ```
 
-#### Without Elm Router
+### Without Elm Router
 
 ```javascript
 var phoenix = require('phoenix');
@@ -78,7 +78,7 @@ var myElmApp = Elm.MyElmApp.embed(document.getElementById('my-elm-app-container'
 websocketPorts.register(myElmApp.ports);
 ```
 
-#### Factory Function API
+### Factory Function API
 
 Notice that the module itself is a factory function with this signature:
 
@@ -86,13 +86,13 @@ Notice that the module itself is a factory function with this signature:
 function websocketPorts(phoenix, socketAddress)
 ```
 
-##### `phoenix`
+#### `phoenix`
 
 This is the [Phoenix Framework JavaScript client](https://www.npmjs.com/package/phoenix). Instead of making Phoenix a dependency of this NPM module, we require it to be injected.
 
 We do this to avoid bloating your bundle by double-importing the Phoenix client, since `mix phoenix.new` sets up `package.json` to import the Phoenix JavaScript client from a relative path in the code repository.
 
-##### `socketAddress`
+#### `socketAddress`
 
 This is the path to your socket endpoint. It can be a relative or absolute path. For example:
 
