@@ -19,7 +19,7 @@ function portsFactory(phoenix, endpoint, topicProvider_) {
     );
   }
 
-  socket = new phoenix.Socket(endpoint);
+  const socket = new phoenix.Socket(endpoint);
   socket.connect();
 
   /**
@@ -31,6 +31,8 @@ function portsFactory(phoenix, endpoint, topicProvider_) {
   function register(ports, log) {
     ports.websocketSend.subscribe(websocketSend);
     ports.websocketListen.subscribe(websocketListen);
+
+    log = log || function() {};
 
     /**
      * Send a Websocket message.
