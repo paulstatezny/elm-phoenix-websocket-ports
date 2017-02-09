@@ -32,7 +32,26 @@ Add `node_modules/elm-phoenix-websocket-ports/lib/elm` to your `source-directori
 ### 3. Use it in your Elm code
 
 ```elm
--- TODO: Add example here
+type Msg
+  = WebsocketReceive (String, String, Json.Decode.Value)
+
+
+init =
+  ( someModel
+  , Ports.Websocket.websocketListen ("search", "receive_results")
+  )
+
+
+subscriptions model =
+  Ports.Websocket.websocketReceive WebsocketReceive
+
+
+update msg model =
+  case msg of
+    WebsocketReceive ("search", "receive_results", payload) ->
+      case Json.Decode.decodeValue searchResultsDecoder payload of
+        Ok searchResults ->
+          -- Do something with searchResults
 ```
 
 ### 4. Register your Elm app in JavaScript
