@@ -1,10 +1,10 @@
-const websocketPorts = require('../src/websocket-ports');
+const websocketPorts = require('../src/phoenix-websocket-ports');
 
 function port(portFn) {
   return portFn.subscribe.mock.calls[0][0];
 }
 
-describe('websocket-ports', () => {
+describe('phoenix-websocket-ports', () => {
   const mockPorts = {};
   const mockPhoenix = {};
   const mockSocket = {};
