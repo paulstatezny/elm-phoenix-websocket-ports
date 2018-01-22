@@ -83,7 +83,34 @@ websocketPorts.register(myElmApp.ports);
 Notice that the module itself is a factory function with this signature:
 
 ```
-function websocketPorts(phoenix, socketAddress)
+function websocketPorts(phoenix, socketAddress, [opts, [topicProvider]])
+```
+
+The last two parameters are optional:
+
+- `opts` is an object containing the options passed into the `phoenix.Socket` constructor, as documented [in the JSDoc of the code](https://github.com/phoenixframework/phoenix/blob/master/assets/js/phoenix.js).
+- `topicProvider` is a function that transforms topic strings.
+
+In practice, `topicProvider` would be used to do something like appending a user ID to a topic:
+
+```js
+function websocketTopicProvider(topic) {
+  if (user.id) {
+    return topic + ":" + user.id;
+  }
+
+  return topic;
+}
+```
+
+Although it'd probably be a better pattern to pass in an access token to the socket and derive the user from the token. `opts` can be used to achieve this:
+
+```
+var websocketPorts = require('elm-phoenix-websocket-ports')(
+  phoenix,
+  socketAddress,
+  {params: {token: ACCESS_TOKEN}}
+);
 ```
 
 #### `phoenix`
