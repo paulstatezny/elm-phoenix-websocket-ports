@@ -36,11 +36,35 @@ describe('phoenix-websocket-ports', () => {
     }).toThrow();
   });
 
-  test('throws an Error if the third argument given to the factory is provided but is not a function', () => {
+  test('throws an Error if the second argument given to the factory isn\'t either falsy or an object', () => {
     resetMocks();
 
     expect(() => {
-      websocketPorts(mockPhoenix, '/socket', 'not a function');
+      websocketPorts(mockPhoenix, '/socket', 5000);
+    }).toThrow();
+  });
+
+  test('does not throw an Error if the second argument given to the factory is an object containing valid options', () => {
+    expect(() => {
+      websocketPorts(mockPhoenix, '/socket', {
+        transport: global.WebSocket,
+        encode: JSON.stringify,
+        decode: JSON.parse,
+        timeout: 15000,
+        heartbeatIntervalMs: 20000,
+        reconnectAfterMs: 30000,
+        logger: (kind, msg, data) => console.log(`${kind}: ${msg}`, data),
+        longpollerTimeout: 12000,
+        params: {token: "abc123"}
+      });
+    }).not.toThrow();
+  });
+
+  test('throws an Error if the fourth argument given to the factory is provided but is not a function', () => {
+    resetMocks();
+
+    expect(() => {
+      websocketPorts(mockPhoenix, '/socket', {}, 'not a function');
     }).toThrow();
   });
 
@@ -60,7 +84,7 @@ describe('phoenix-websocket-ports', () => {
 
     test('runs the topic through topicProvider before joining the channel', () => {
       resetMocks();
-      websocketPorts(mockPhoenix, '/socket', topic => topic + ":test").register(mockPorts);
+      websocketPorts(mockPhoenix, '/socket', {}, topic => topic + ":test").register(mockPorts);
       port(mockPorts.websocketSend)(['myTopic', 'myEvent']);
 
       expect(mockSocket.channel).toHaveBeenCalledWith('myTopic:test');
@@ -92,7 +116,7 @@ describe('phoenix-websocket-ports', () => {
 
     test('runs the topic through topicProvider before joining the channel', () => {
       resetMocks();
-      websocketPorts(mockPhoenix, '/socket', topic => topic + ":testing").register(mockPorts);
+      websocketPorts(mockPhoenix, '/socket', {}, topic => topic + ":testing").register(mockPorts);
       port(mockPorts.websocketListen)(['myTopic', 'myEvent']);
 
       expect(mockSocket.channel).toHaveBeenCalledWith('myTopic:testing');
