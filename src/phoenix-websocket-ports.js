@@ -1,7 +1,26 @@
 module.exports = portsFactory;
 
-function portsFactory(phoenix, endpoint, topicProvider_) {
-  const topicProvider = topicProvider_ || (topic => topic); // Default topicProvider to identity function
+/**
+ * Create a websocket ports object.
+ *
+ * @param {Object}   phoenix        The Phoenix JavaScript bundle. (Used to access the Socket constructor.)
+ * @param {String}   endpoint       The URL of the socket endpoint. ("/socket" by default in Phoenix.)
+ * @param {Object}   options        (Optional) A set of options to pass to the Socket contructor.
+ *                                  These aren't documented outside the code, but inspecting the phoenix.js code reveals these options:
+ *                                    - transport (either window.WebSocket or phoenix.LongPoll)
+ *                                    - encode (The function to encode outgoing messages.)
+ *                                    - decode (The function to decode outgoing messages.)
+ *                                    - timeout (The default timeout in milliseconds to trigger push timeouts.)
+ *                                    - heartbeatIntervalMs (The millisec interval to send a heartbeat message)
+ *                                    - reconnectAfterMs (The optional function that returns the millsec reconnect interval.)
+ *                                    - logger (The optional function for specialized logging. Signature: `function(kind, msg, data)`)
+ *                                    - longpollerTimeout (The maximum timeout of a long poll AJAX request.)
+ *                                    - params (Optional params to pass when connecting.) -- e.g. An access token.
+ * @param {Function} topicProvider  (Optional) A function which, given a channel topic, returns a "qualified" topic.
+ *                                  (Can be used to interpolate a user ID into topic names.)
+ */
+function portsFactory(phoenix, endpoint, options, topicProvider) {
+  const topicProvider_ = topicProvider || (topic => topic); // Default topicProvider to identity function
   const channels = {};
 
   if (!phoenix.Socket || typeof phoenix.Socket !== 'function') {
@@ -11,7 +30,18 @@ function portsFactory(phoenix, endpoint, topicProvider_) {
     );
   }
 
-  if (typeof topicProvider !== 'function') {
+  options = options || {};
+
+  if (options && typeof options !== 'object') {
+    throw new Error(
+      'The third (optional) argument for elm-phoenix-websocket-ports must be '
+      + 'an object or undefined. Valid options in the object are documented in the JSDoc '
+      + 'of the Socket constructor at '
+      + 'https://github.com/phoenixframework/phoenix/blob/master/assets/js/phoenix.js'
+    );
+  }
+
+  if (typeof topicProvider_ !== 'function') {
     throw new Error(
       'The third (optional) argument for elm-phoenix-websocket-ports must be '
       + 'a function that takes a websocket topic name and returns a modified version '
@@ -19,7 +49,7 @@ function portsFactory(phoenix, endpoint, topicProvider_) {
     );
   }
 
-  const socket = new phoenix.Socket(endpoint);
+  const socket = new phoenix.Socket(endpoint, options);
   socket.connect();
 
   /**
@@ -71,10 +101,10 @@ function portsFactory(phoenix, endpoint, topicProvider_) {
      */
     function ensureChannelJoined(topic) {
       if (! channels[topic]) {
-        channels[topic] = socket.channel(topicProvider(topic));
+        channels[topic] = socket.channel(topicProvider_(topic));
         channels[topic].join();
 
-        log('Joined channel', topicProvider(topic));
+        log('Joined channel', topicProvider_(topic));
       }
     }
   }
