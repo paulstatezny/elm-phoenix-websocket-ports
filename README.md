@@ -105,7 +105,7 @@ function websocketTopicProvider(topic) {
 
 Although it'd probably be a better pattern to pass in an access token to the socket and derive the user from the token. `opts` can be used to achieve this:
 
-```
+```js
 var websocketPorts = require('elm-phoenix-websocket-ports')(
   phoenix,
   socketAddress,
