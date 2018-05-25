@@ -1,4 +1,4 @@
-# Elm Phoenix Websocket Ports [![Build Status](https://travis-ci.org/knledg/elm-phoenix-websocket-ports.svg?branch=master)](https://travis-ci.org/knledg/elm-phoenix-websocket-ports)
+# Elm Phoenix Websocket Ports [![Build Status](https://travis-ci.org/paulstatezny/elm-phoenix-websocket-ports.svg?branch=master)](https://travis-ci.org/paulstatezny/elm-phoenix-websocket-ports)
 
 Communicate with a [Phoenix Framework](http://www.phoenixframework.org/) application via Websocket.
 
@@ -56,7 +56,7 @@ update msg model =
 
 ### 4. Register your Elm app in JavaScript
 
-### Using [Elm Router](https://github.com/knledg/elm-router)
+### Using [Elm Router](https://github.com/paulstatezny/elm-router)
 
 ```javascript
 var phoenix = require('phoenix');
@@ -135,4 +135,4 @@ wss://www.mysite.com/socket_endpoint
 
 ## Questions or Problems?
 
-Feel free to create an issue in the [GitHub issue tracker](https://github.com/knledg/elm-phoenix-websocket-ports/issues).
+Feel free to create an issue in the [GitHub issue tracker](https://github.com/paulstatezny/elm-phoenix-websocket-ports/issues).

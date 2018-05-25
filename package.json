@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/knledg/elm-phoenix-websocket-ports.git"
+    "url": "git+https://github.com/paulstatezny/elm-phoenix-websocket-ports.git"
   },
   "keywords": [
     "Elm",
@@ -18,12 +18,12 @@
     "localstorage",
     "local storage"
   ],
-  "author": "Consolidated Knowledge",
+  "author": "Paul Statezny",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/knledg/elm-phoenix-websocket-ports/issues"
+    "url": "https://github.com/paulstatezny/elm-phoenix-websocket-ports/issues"
   },
-  "homepage": "https://github.com/knledg/elm-phoenix-websocket-ports#readme",
+  "homepage": "https://github.com/paulstatezny/elm-phoenix-websocket-ports#readme",
   "devDependencies": {
     "babel-cli": "^6.22.2",
     "babel-core": "^6.22.1",
